@@ -4,15 +4,24 @@ namespace Inlämningsuppgift_2__Butiksdatasystem
 {
     class Program
     {
-        static void PrintKassaMenu()
-        {
-            Console.WriteLine("KASSA");
-            Console.WriteLine("1. Ny kund");
-            Console.WriteLine("0. Avsluta");
-        }
+        
         static void Main(string[] args)
         {
-            PrintKassaMenu();
+            Menu meny = new Menu();
+            meny.PrintKassaMeny();
+            var menyVal = meny.KorrektMenyval();
+
+            switch (menyVal)
+            {
+                case 1:
+                    meny.NyKund();
+                    break;
+                case 0:
+                    meny.AvslutaKassaSystem();
+                    break;
+            }
+
+            //ANVÄND DENNA KOD för att skriva belopp: Console.WriteLine(5000.ToString("C",null)); "5 000,00 kr"
         }
     }
 }
