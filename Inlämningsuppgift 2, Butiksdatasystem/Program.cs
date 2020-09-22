@@ -7,21 +7,38 @@ namespace Inlämningsuppgift_2__Butiksdatasystem
         
         static void Main(string[] args)
         {
+            //Store store = new Store();
+            //Produkt apples = new Produkt("Äpple", "100", 5, PrisTyp.Kilo);
+            //Produkt bananas = new Produkt("Banan", "200", 3, PrisTyp.Kilo);
+            //Produkt kaffe = new Produkt("Kaffe", "300", 35, PrisTyp.Styck);
+            //store.AddProductToStore(apples);
+            //store.AddProductToStore(bananas);
+            //store.AddProductToStore(kaffe);
+
+            FilePaths filepaths = new FilePaths();
+            filepaths.GetAllProductsFromFile();
             Menu meny = new Menu();
-            meny.PrintKassaMeny();
-            var menyVal = meny.KorrektMenyval();
-
-            switch (menyVal)
+            bool isRunning = true;
+            while (isRunning)
             {
-                case 1:
-                    meny.NyKund();
-                    break;
-                case 0:
-                    meny.AvslutaKassaSystem();
-                    break;
+                meny.PrintKassaMeny();
+                var menyVal = meny.KorrektMenyval();
+                switch (menyVal)
+                {
+                    case 1:
+                        Console.Clear();
+                        meny.NyKund();
+                        break;
+                    case 0:
+                        meny.AvslutaKassaSystem();
+                        filepaths.SaveReceiptsToFile();
+                        isRunning = false;
+                        break;
+                }
             }
+            
 
-            //ANVÄND DENNA KOD för att skriva belopp: Console.WriteLine(5000.ToString("C",null)); "5 000,00 kr"
+
         }
     }
 }

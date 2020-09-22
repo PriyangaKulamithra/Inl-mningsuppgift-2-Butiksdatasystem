@@ -7,6 +7,6 @@ namespace Inlämningsuppgift_2__Butiksdatasystem
     public enum PrisTyp
     {
         Kilo,
-        Styck,
+        Styck
     }
 }

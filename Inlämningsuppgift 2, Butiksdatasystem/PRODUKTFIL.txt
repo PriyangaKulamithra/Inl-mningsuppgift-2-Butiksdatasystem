@@ -1,0 +1,3 @@
+﻿Äpple 100 5 Kilo
+Banan 200 3 Kilo
+Kaffe 300 35 Styck
