@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
 
-namespace Inlämningsuppgift_2__Butiksdatasystem
+namespace MALL_inlupp_2
 {
-    class Menu
+    internal class Menu
     {
-        public void PrintKassaMeny()
+        public void PrintMenu()
         {
             Console.WriteLine("KASSA");
             Console.WriteLine("1. Ny kund");
             Console.WriteLine("0. Avsluta");
             Console.Write("Menyval: ");
         }
-        public int KorrektMenyval()
+        public int SafeMenuInput()
         {
             int nummer;
             while (true)
@@ -26,62 +24,12 @@ namespace Inlämningsuppgift_2__Butiksdatasystem
             }
             return nummer;
         }
-        public void NyKund()
+        internal void Quit(IEnumerable<Product> allProductsInStore, Store store)
         {
-            //ÖPPNA TEXTFIL OCH LÄS IN SPARADE PRODUKTER TILL LISTA
-            //NYTT KÖP OCH KVITTO SPARAS TILL LISTA VID "PAY"
-            var thisDateAndTime = DateTime.Now.ToString();
-            Console.WriteLine("KASSA");
-            Console.BackgroundColor = ConsoleColor.Red;
-            Console.WriteLine($"KVITTO   {thisDateAndTime}");
-            Console.BackgroundColor = ConsoleColor.Black;
-            while (true)
-            {
-                Receipt newReceipt = new Receipt();
-                ShoppingCart shoppingcart = new ShoppingCart();
-                var Cart = shoppingcart.GetShoppingCart();
-                foreach (var product in Cart)
-                {
-                    Console.WriteLine($"{product.ProduktNamn} ");
-                }
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.WriteLine("kommandon: ");
-                Console.WriteLine("<productid> <antal>");
-                Console.WriteLine("PAY");
-                Console.Write("Kommando: ");
-                var kommandoInput = Console.ReadLine();
-
-                if (kommandoInput == "PAY")
-                {
-                    //newReceipt.AddReceiptToTodaysList(newReceipt);
-                    break;
-                }
-                else
-                {
-                    string productid = kommandoInput.Substring(0, 3);
-                    int amount = Convert.ToInt32(kommandoInput.Substring(4));
-                    Store newStore = new Store();
-                    var thisProduct = newStore.GetProductInfo(kommandoInput);
-                    shoppingcart.AddToShoppingCart(thisProduct);
-                }
-            }
-        }
-
-        //FORTSÄTT MED NEDAN KOD IMORGON FÖR ATT HANTERA KOMMANDOINPUT, FÖLJD AV OVAN METOD
-        //TA IN STRÄNGEN, DELA VID SPACE OCH LÄGG I OLIKA VARIABLER
-        public string KommandoInput()
-        {
-            var input = Console.ReadLine();
-            return input;
-        }
-        public void AvslutaKassaSystem()
-        {
+            store.SaveProductsToFile(allProductsInStore);
             Console.Clear();
-            Receipt AllReceiptsFromToday = new Receipt();
-            //AllReceiptsFromToday.SaveReceiptsToFile();
             Console.WriteLine("Tack för idag!");
             System.Threading.Thread.Sleep(1000);
-            //SPARA ALLA KVITTON TILL FIL
         }
     }
 }

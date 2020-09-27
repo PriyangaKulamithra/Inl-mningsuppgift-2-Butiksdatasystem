@@ -1,44 +1,35 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.IO;
 
-namespace Inlämningsuppgift_2__Butiksdatasystem
+namespace MALL_inlupp_2
 {
     class Program
     {
-        
         static void Main(string[] args)
         {
-            //Store store = new Store();
-            //Produkt apples = new Produkt("Äpple", "100", 5, PrisTyp.Kilo);
-            //Produkt bananas = new Produkt("Banan", "200", 3, PrisTyp.Kilo);
-            //Produkt kaffe = new Produkt("Kaffe", "300", 35, PrisTyp.Styck);
-            //store.AddProductToStore(apples);
-            //store.AddProductToStore(bananas);
-            //store.AddProductToStore(kaffe);
+            var menu = new Menu();
+            var store = new Store();
+            var allProductsInStore = store.GetAllProductsInStore();
 
-            FilePaths filepaths = new FilePaths();
-            filepaths.GetAllProductsFromFile();
-            Menu meny = new Menu();
             bool isRunning = true;
             while (isRunning)
             {
-                meny.PrintKassaMeny();
-                var menyVal = meny.KorrektMenyval();
-                switch (menyVal)
+                menu.PrintMenu();
+                var menuChoice = menu.SafeMenuInput();
+                switch (menuChoice)
                 {
                     case 1:
-                        Console.Clear();
-                        meny.NyKund();
+                        var newCustomer = new NewCustomer();
+                        newCustomer.StartNewPurchase();
                         break;
                     case 0:
-                        meny.AvslutaKassaSystem();
-                        filepaths.SaveReceiptsToFile();
-                        isRunning = false;
+                        menu.Quit(allProductsInStore, store);
+                        isRunning = !isRunning;
                         break;
                 }
             }
-            
-
-
         }
     }
 }

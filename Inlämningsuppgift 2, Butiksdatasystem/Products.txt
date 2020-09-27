@@ -1,0 +1,6 @@
+Äpple_100_29_Kilo
+Banan_200_20_Kilo
+Kaffe_300_35_Styck
+Tandborste, 3-pack_400_39_Styck
+Yoghurt, 1 liter_500_14_Styck
+Mjölk, 1 liter_600_10_Styck

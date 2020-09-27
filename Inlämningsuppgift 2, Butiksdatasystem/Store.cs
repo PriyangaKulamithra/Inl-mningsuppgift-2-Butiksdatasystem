@@ -1,56 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http.Headers;
+using System.IO;
 using System.Text;
 
-namespace Inlämningsuppgift_2__Butiksdatasystem
+namespace MALL_inlupp_2
 {
     class Store
     {
-        private List<Produkt> AllProductsInStore = new List<Produkt>();
+        private List<Product> AllProductsInStore = new List<Product>();
 
-        public void AddProductToStore(Produkt product)
+        private List<Product> AddToStoreFromFile()
         {
-            AllProductsInStore.Add(product);
+            string productFilePath = @"..\..\..\Products.txt";
+            if (File.Exists(productFilePath))
+            {
+                using (var sr = File.OpenText(productFilePath))
+                {
+                    while (true)
+                    {
+                        var line = sr.ReadLine();
+                        if (String.IsNullOrEmpty(line)) break;
+                        var splitLine = line.Split('_');
+                        ProductType type;
+                        if (splitLine[3] == "Styck") type = ProductType.Styck;
+                        else type = ProductType.Kilo;
+                        Product newProduct = new Product(splitLine[0], splitLine[1], Convert.ToInt32(splitLine[2]), type);
+                        AllProductsInStore.Add(newProduct);
+                    }
+                }
+                return AllProductsInStore;
+            }
+            else return null;
         }
-        public bool IsAProduct(string productid)
+        internal Product DoesProductExistInStore(string id)
         {
             foreach (var product in AllProductsInStore)
             {
-                if (productid == product.ProduktID)
-                    return true;
-            }
-            return false;
-        }
-        //public IEnumerable<Produkt> GetAllProductsInStore()
-        //{
-        //    return AllProductsInStore;
-        //}
-        public Produkt GetProductInfo(string kommandoinput)
-        {
-            string productid = kommandoinput.Substring(0, 3);
-            int amount = Convert.ToInt32(kommandoinput.Substring(4));
-            bool isAProduct = IsAProduct(productid);
-            if (isAProduct == true)
-            {
-                foreach (var product in AllProductsInStore)
+                if (id == product.ProductID)
                     return product;
             }
-            Console.WriteLine("Produktid finns ej.");
             return null;
         }
-        public decimal CalculatePrice(string productID, int amount)
+        public void SaveProductsToFile(IEnumerable<Product> AllProductsInStore)
         {
-            decimal price = 0;
-            foreach (var product in AllProductsInStore)
+            string productFilePath = @"..\..\..\Products.txt";
+            if (File.Exists(productFilePath)) File.Delete(productFilePath);
+            using (var sw = File.AppendText(productFilePath))
             {
-                if (productID == product.ProduktID)
+                foreach (var product in AllProductsInStore)
                 {
-                    price += product.Pris * amount;
+                    var line = $"{product.ProductName}_{product.ProductID}_{product.Price}_{product.Type}";
+                    sw.WriteLine(line);
                 }
             }
-            return price;
         }
-       
+        public IEnumerable<Product> GetAllProductsInStore()
+        {
+            AddToStoreFromFile();
+            return AllProductsInStore;
+        }
     }
 }
