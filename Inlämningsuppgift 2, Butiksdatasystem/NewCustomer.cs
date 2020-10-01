@@ -53,7 +53,8 @@ namespace Inlämningsuppgift_2__Butiksdatasystem
                     }
                     else if (product == null)
                     {
-                        Console.WriteLine("Produkt hittades ej");
+                        Console.WriteLine("ProduktID hittades ej");
+                        System.Threading.Thread.Sleep(1000);
                     }
                     else
                     {
@@ -89,12 +90,7 @@ namespace Inlämningsuppgift_2__Butiksdatasystem
         private Product GetProduct(string id, IEnumerable<Product> allProducts)
         {
             var existing = DoesProductExistInStore(id, allProducts);
-            if (existing == null)
-            {
-                Console.WriteLine("ProduktID hittades ej");
-                System.Threading.Thread.Sleep(1000);
-                return null;
-            }
+            if (existing == null) return null;
             else return existing;
         }
         private Product DoesProductExistInStore(string id, IEnumerable<Product> allProductsInStore)
