@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MALL_inlupp_2
+namespace Inlämningsuppgift_2__Butiksdatasystem
 {
     internal class Menu
     {

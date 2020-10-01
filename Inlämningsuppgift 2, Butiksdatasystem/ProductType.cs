@@ -1,4 +1,4 @@
-﻿namespace MALL_inlupp_2
+﻿namespace Inlämningsuppgift_2__Butiksdatasystem
 {
     public enum ProductType
     {

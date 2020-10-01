@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace MALL_inlupp_2
+namespace Inlämningsuppgift_2__Butiksdatasystem
 {
     class Store
     {

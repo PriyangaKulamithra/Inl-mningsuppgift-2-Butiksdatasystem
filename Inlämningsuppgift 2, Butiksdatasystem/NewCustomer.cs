@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace MALL_inlupp_2
+namespace Inlämningsuppgift_2__Butiksdatasystem
 {
     internal class NewCustomer
     {
@@ -45,7 +45,7 @@ namespace MALL_inlupp_2
                 {
                     var id = GetIDFromInput(input);
                     var qty = GetQtyFromInput(input);
-                    var product = AddProductToPurchase(id, allProductsInStore);
+                    var product = GetProduct(id, allProductsInStore);
                     if (product != null && !shoppingCartItems.Contains(product))
                     {
                         shoppingCartItems.Add(product);
@@ -86,7 +86,7 @@ namespace MALL_inlupp_2
             int.TryParse(input.Substring(4), out qty);
             return qty;
         }
-        private Product AddProductToPurchase(string id, IEnumerable<Product> allProducts)
+        private Product GetProduct(string id, IEnumerable<Product> allProducts)
         {
             var existing = DoesProductExistInStore(id, allProducts);
             if (existing == null)

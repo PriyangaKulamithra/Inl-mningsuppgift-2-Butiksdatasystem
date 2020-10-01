@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
 
-namespace MALL_inlupp_2
+namespace Inlämningsuppgift_2__Butiksdatasystem
 {
     class Program
     {
