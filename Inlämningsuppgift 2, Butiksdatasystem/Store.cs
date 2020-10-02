@@ -36,8 +36,7 @@ namespace Inlämningsuppgift_2__Butiksdatasystem
         {
             foreach (var product in AllProductsInStore)
             {
-                if (id == product.ProductID)
-                    return product;
+                if (id == product.ProductID) return product;
             }
             return null;
         }
@@ -58,6 +57,15 @@ namespace Inlämningsuppgift_2__Butiksdatasystem
         {
             AddToStoreFromFile();
             return AllProductsInStore;
+        }
+        public Product GetProduct(string id)
+        {
+            var allProduct = GetAllProductsInStore();
+            foreach (var product in allProduct)
+            {
+                if (id == product.ProductID) return product;
+            }
+            return null;
         }
     }
 }

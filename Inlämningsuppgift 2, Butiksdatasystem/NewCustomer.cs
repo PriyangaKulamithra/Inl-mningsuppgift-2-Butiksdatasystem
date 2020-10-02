@@ -6,47 +6,34 @@ namespace Inlämningsuppgift_2__Butiksdatasystem
 {
     internal class NewCustomer
     {
-
         public void StartNewPurchase()
         {
             Store store = new Store();
-            var allProductsInStore = store.GetAllProductsInStore();
             var shoppingCartItems = new List<Product>();
             var howManyItems = new List<int>();
             var thisDateAndTime = DateTime.Now.ToString();
-            var calculator = new Calculator();
-
             while (true)
             {
-                Console.Clear();
-                Console.WriteLine("KASSA");
-                Console.BackgroundColor = ConsoleColor.Red;
-                Console.WriteLine($"KVITTO   {thisDateAndTime}");
-                var total = 0m;
-                var index = 0;
-                foreach (var eachProduct in shoppingCartItems)
-                {
-                    var price = calculator.GetPrice(eachProduct.Price, howManyItems[index]);
-                    Console.WriteLine($"{eachProduct.ProductName} {howManyItems[index]}*{eachProduct.Price} = {price}");
-                    total += price;
-                    index++;
-                }
-                if (total < 1000) Console.WriteLine($"Total: {total}");
-                else if (total >= 1000) calculator.GetDiscountAndPrint(total);
-                PrintKommando();
-
+                PrintShoppingCart(thisDateAndTime, shoppingCartItems, howManyItems);
+                PrintOption();
                 var input = CorrectInput();
                 if (input == "PAY")
                 {
                     Pay(shoppingCartItems, howManyItems, thisDateAndTime);
                     break;
                 }
+                else if (input == "RETURN")
+                {
+                    Console.Write("<productid> ");
+                    var id = Console.ReadLine();
+                    Return(id, shoppingCartItems, howManyItems);
+                }
                 else
                 {
                     var id = GetIDFromInput(input);
                     var qty = GetQtyFromInput(input);
-                    var product = GetProduct(id, allProductsInStore);
-                    if (product != null && !shoppingCartItems.Contains(product))
+                    var product = store.GetProduct(id);
+                    if (product != null && !shoppingCartItems.Contains(product) && qty > 0)
                     {
                         shoppingCartItems.Add(product);
                         howManyItems.Add(qty);
@@ -56,11 +43,54 @@ namespace Inlämningsuppgift_2__Butiksdatasystem
                         Console.WriteLine("ProduktID hittades ej");
                         System.Threading.Thread.Sleep(1000);
                     }
+                    else if (qty < 1)
+                    {
+                        Console.WriteLine("För lågt antal.");
+                        System.Threading.Thread.Sleep(1000);
+                    }
                     else
                     {
                         var indexOfProductInToBuy = shoppingCartItems.IndexOf(product);
                         howManyItems[indexOfProductInToBuy] += qty;
                     }
+                }
+            }
+        }
+
+        private void PrintShoppingCart(string thisDateAndTime, List<Product> shoppingCartItems, List<int> howManyItems)
+        {
+            var calculator = new Calculator();
+            Console.Clear();
+            Console.WriteLine("KASSA");
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.WriteLine($"KVITTO   {thisDateAndTime}");
+            var total = 0m;
+            var index = 0;
+            foreach (var eachProduct in shoppingCartItems)
+            {
+                var price = calculator.GetPrice(eachProduct.Price, howManyItems[index]);
+                Console.WriteLine($"{eachProduct.ProductName} {howManyItems[index]}*{eachProduct.Price} = {price}");
+                total += price;
+                index++;
+            }
+            if (total < 1000) Console.WriteLine($"Total: {total}");
+            else if (total >= 1000) calculator.GetDiscountAndPrint(total);
+        }
+
+        private void Return(string id, List<Product> shoppingCartItems, List<int> howManyItems)
+        {
+            foreach (var item in shoppingCartItems)
+            {
+                if (item.ProductID == id)
+                {
+                    var index = shoppingCartItems.IndexOf(item);
+                    if (howManyItems[index] == 0)
+                    {
+                        shoppingCartItems.Remove(shoppingCartItems[index]);
+                        howManyItems.Remove(howManyItems[index]);
+                        break;
+                    }
+                    howManyItems[index]--;
                 }
             }
         }
@@ -102,21 +132,21 @@ namespace Inlämningsuppgift_2__Butiksdatasystem
             }
             return null;
         }
-        private void PrintKommando()
+        private void PrintOption()
         {
             Console.BackgroundColor = ConsoleColor.Black;
             Console.WriteLine("Kommandon:");
             Console.WriteLine("<productid> <antal>");
+            Console.WriteLine("RETURN");
             Console.WriteLine("PAY");
             Console.Write("Kommando: ");
         }
         private string CorrectInput()
         {
-            var input = "";
             while (true)
             {
-                input = Console.ReadLine();
-                if (input.Length < 5 && input != "PAY")
+                var input = Console.ReadLine();
+                if (input.Length < 5 && input != "PAY" && input != "RETURN")
                 {
                     Console.Write("Ogiltig input. Var god ange 3-siffrigt produkt-id och antal: ");
                 }

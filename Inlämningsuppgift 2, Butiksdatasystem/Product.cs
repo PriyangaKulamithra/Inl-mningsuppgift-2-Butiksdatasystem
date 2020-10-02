@@ -6,7 +6,6 @@ namespace Inlämningsuppgift_2__Butiksdatasystem
 {
     class Product
     {
-        private List<Product> AllProducts = new List<Product>();
         public string ProductID { get; private set; }
         public int Price { get; private set; }
         public ProductType Type { get; private set; }
@@ -17,10 +16,6 @@ namespace Inlämningsuppgift_2__Butiksdatasystem
             ProductID = productID;
             Price = price;
             Type = type;
-        }
-        public void AddtoAllProductList(Product newProduct)
-        {
-            AllProducts.Add(newProduct);
         }
     }
 }
