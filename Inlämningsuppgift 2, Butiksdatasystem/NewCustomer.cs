@@ -94,7 +94,6 @@ namespace Inlämningsuppgift_2__Butiksdatasystem
                 }
             }
         }
-
         private void Pay(List<Product> ProductsToBuy, List<int> qty, string date)
         {
             var newPayment = new Payment(ProductsToBuy, qty, date);
@@ -103,7 +102,6 @@ namespace Inlämningsuppgift_2__Butiksdatasystem
             System.Threading.Thread.Sleep(1000);
             Console.Clear();
         }
-
         private string GetIDFromInput(string input)
         {
             var splittedInput = input.Split(' ');

@@ -24,9 +24,9 @@ namespace Inlämningsuppgift_2__Butiksdatasystem
             }
             return nummer;
         }
-        internal void Quit(IEnumerable<Product> allProductsInStore, Store store)
+        internal void Quit(Store store)
         {
-            store.SaveProductsToFile(allProductsInStore);
+            store.SaveProductsInStoreToFile();
             Console.Clear();
             Console.WriteLine("Tack för idag!");
             System.Threading.Thread.Sleep(1000);
